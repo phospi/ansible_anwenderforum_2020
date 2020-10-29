@@ -1,0 +1,3 @@
+- name: Include windows installation sub tasks
+  include_tasks: multi-reboot-2-install-win-tasks.yml
+  loop: "{{ range(0, 4)|list }}"

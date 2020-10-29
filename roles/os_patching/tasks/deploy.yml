@@ -1,0 +1,9 @@
+# *********************************************************************
+# * Deploy OS Updates
+# *********************************************************************
+---
+- name: include download tasks
+  include_tasks: download.yml
+
+- name: include installation tasks
+  include_tasks: install.yml

@@ -1,0 +1,52 @@
+# This playbook provides a convenient entry point to this playbook collection.
+# This file is necessary to be able to call the maintenance tasks.
+# The variable "execution_variant" is meant to determine how the maintenance actions
+# are executed.
+#
+# "standard"          - just execute maintenance actions
+# "standard-free"     - execute maintenance actions with strategy free (DANGEROUS)
+# "only-win2016"      - execute maintenance actions only for win2016 systems
+# "only-win2016-free" - execute maintenance actions only for win2016 systems with strategy free (DANGEROUS)
+# "no-win2016"        - execute maintenance actions for windows systems except version 2016
+# "no-win2016-free"   - execute maintenance actions for windows systems except version 2016 with strategy free (DANGEROUS)
+#
+
+- hosts: "{{ ansible_limit }}"
+  tasks:
+    - name: "Structured maintenance - standard mode"
+      include_tasks: tasks/general_maintenance_flow.yml
+      when: execution_variant == "standard"
+
+    - name: "Structured maintenance - Only Windows 2016"
+      include_tasks: tasks/general_maintenance_flow.yml
+      when:
+        - execution_variant == "only-win2016"
+        - ansible_distribution in ["Microsoft Windows Server 2016 Datacenter", "Microsoft Windows Server 2016 Standard"]
+
+    - name: "Structured maintenance - Only Windows without 2016"
+      include_tasks: tasks/general_maintenance_flow.yml
+      when:
+        - execution_variant == "no-win2016"
+        - ansible_distribution not in ["Microsoft Windows Server 2016 Datacenter", "Microsoft Windows Server 2016 Standard"]
+        - ansible_os_family == "Windows"
+
+
+- hosts: "{{ ansible_limit }}"
+  strategy: free
+  tasks:
+    - name: "Structured maintenance - standard mode - strategy free"
+      include_tasks: tasks/general_maintenance_flow.yml
+      when: execution_variant == "standard-free"
+
+    - name: "Structured maintenance - Only Windows 2016 - strategy free"
+      include_tasks: tasks/general_maintenance_flow.yml
+      when:
+        - execution_variant == "only-win2016-free"
+        - ansible_distribution in ["Microsoft Windows Server 2016 Datacenter", "Microsoft Windows Server 2016 Standard"]
+
+    - name: "Structured maintenance - Only Windows without 2016 - strategy free"
+      include_tasks: tasks/general_maintenance_flow.yml
+      when:
+        - execution_variant == "no-win2016-free"
+        - ansible_distribution not in ["Microsoft Windows Server 2016 Datacenter", "Microsoft Windows Server 2016 Standard"]
+        - ansible_os_family == "Windows"

@@ -1,0 +1,12 @@
+- name: "Stop nginx"
+  service: 
+    name: nginx 
+    state: stopped
+    enabled: no
+  when: "'nginx' in group_names"
+  
+- name: "Stop mariadb"
+  service: 
+    name: mariadb 
+    state: stopped
+  when: "'mariadb' in group_names"

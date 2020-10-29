@@ -1,0 +1,19 @@
+- include_tasks: maintenance_preparations.yml
+
+- name: Sub-Patch-Wave-A
+  include_tasks: sub_patch_wave_workflow.yml
+  when: "'sub_patch_wave_a' in group_names"
+
+- name: Sub-Patch-Wave-B
+  include_tasks: sub_patch_wave_workflow.yml
+  when: "'sub_patch_wave_b' in group_names"
+
+- name: Sub-Patch-Wave-C
+  include_tasks: sub_patch_wave_workflow.yml
+  when: "'sub_patch_wave_c' in group_names"
+
+- name: Sub-Patch-Wave-D
+  include_tasks: sub_patch_wave_workflow.yml
+  when: "'sub_patch_wave_d' in group_names"
+
+- include_tasks: maintenance_postprocessing.yml

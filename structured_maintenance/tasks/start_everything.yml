@@ -1,0 +1,14 @@
+- name: "Start DB + SAP"
+  include_tasks: start/start_general.yml
+
+- name: check if customer exists
+  local_action:
+    module: stat
+    path: "{{ playbook_dir }}/start/start_{{ customer }}.yml"
+  register: start_yml
+  check_mode: no
+  become: no # Ansible Tower security
+
+- name: "Start Apps for customer {{ customer }}"
+  include_tasks: "start/start_{{ customer }}.yml"
+  when: start_yml.stat.exists

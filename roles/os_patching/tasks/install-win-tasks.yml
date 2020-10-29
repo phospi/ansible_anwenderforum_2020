@@ -1,0 +1,28 @@
+- name: "Execute Script - Install Windows Updates"
+  script: files/{{ script_ps_install_windowsupdates }}
+  register: update_install_result
+  retries: 10
+  delay: 20
+  until:
+    - update_install_result is succeeded
+    - update_install_result is defined
+
+- name: "Execute Script - Test Pending Reboot"
+  script: files/{{ module_pending_reboot }}
+  register: pending_reboot
+  retries: 3
+  delay: 20
+  until:
+    - pending_reboot is succeeded
+    - pending_reboot is defined
+
+- name: trim whitespaces for reboot var
+  set_fact:
+    reboot_required: "{{ pending_reboot.stdout | trim | default(False) }}"
+  when: not ansible_check_mode
+
+- name: Reboot
+  win_reboot:
+    reboot_timeout: 3600
+  when: auto_reboot and reboot_required
+

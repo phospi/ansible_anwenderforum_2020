@@ -1,0 +1,25 @@
+- name: 'set downtime'
+  include_role:
+    name: my_monitoring_role
+  vars:
+    - action: set_downtime
+    - start_time: start_time
+    - end_time: end_time
+    - host: {{ ansible_host }}
+    - operation: remove
+
+- name: 'disable backup'
+  include_role:
+    name: my_backup_role
+  vars:
+    - action: enable_backup
+    - host: {{ ansible_host }}
+
+- name: 'send_mail'
+  include_role:
+    name: my_mail_role
+  vars:
+    - mail_template: maintenance_over
+    - recipient: maintenance_recipient@company.com 
+  run_once: yes
+

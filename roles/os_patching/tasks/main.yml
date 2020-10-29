@@ -1,0 +1,20 @@
+# *********************************************************************
+# * Manage OS Updates
+# *********************************************************************
+---
+- name: "Listing parameters"
+  fail:
+    msg: "Please set operation parameter"
+  when: operation == 'noop'
+
+- name: Download Updates
+  include_tasks: download.yml
+  when: operation == 'download'
+
+- name: Install Updates
+  include_tasks: install.yml
+  when: operation == 'install'
+
+- name: Deploy (Download & Install) Updates
+  include_tasks: deploy.yml
+  when: operation == 'deploy'

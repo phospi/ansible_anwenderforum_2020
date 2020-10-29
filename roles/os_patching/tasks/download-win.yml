@@ -1,0 +1,6 @@
+- name: "Execute Script - Download Windows Updates"
+  script: files/{{ script_ps_download_windowsupdates }}
+  register: _command_result
+  retries: 20
+  delay: 20
+  until: _command_result is succeeded

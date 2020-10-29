@@ -1,0 +1,18 @@
+---
+operation: noop
+
+#####
+# variables for operation "install"
+#####
+auto_reboot: false
+pre_reboot: false
+max_reboots: 5
+
+#####
+# role internal constants
+#####
+reboot_required: false
+script_ps_download_windowsupdates: "sps-download-windowsupdates.ps1"
+script_ps_install_windowsupdates: "sps-install-windowsupdates.ps1"
+module_pending_reboot: "PendingReboot.ps1"
+

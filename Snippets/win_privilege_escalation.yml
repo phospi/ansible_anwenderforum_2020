@@ -1,0 +1,11 @@
+---
+hosts: my_hosts
+gather_facts: yes
+tasks:
+  - name: Windows OS Patching
+    # this module does not exist
+    install_patches:
+      action: install
+    become: yes
+    become_user: SYSTEM
+    become_method: run_as

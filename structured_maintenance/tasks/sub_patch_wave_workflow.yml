@@ -1,0 +1,9 @@
+
+- name: Stop Everything
+  include_tasks: stop_everything.yml
+
+- name: "Execute maintenance action(s)"
+  include_tasks: maintenance_actions.yml
+
+- name: Start everything.yml
+  include_tasks: start_everything.yml

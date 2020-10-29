@@ -1,0 +1,49 @@
+# *********************************************************************
+# * Install available Linux Updates for major distributions (For Linux only)
+# *********************************************************************
+---
+- name: Reboot before patch installation
+  reboot:
+    reboot_timeout: 3600
+  when: pre_reboot
+
+- name: YUM - upgrade all packages # noqa 403
+  yum:
+    name: '*'
+    state: latest
+  register: yum_result
+  when: ansible_pkg_mgr == "yum"
+  retries: 3
+  until: yum_result is not failed
+
+- name: YUM - Clean Archive # noqa 303 305
+  shell: yum clean all
+  when: ansible_pkg_mgr == "yum"
+
+- name: APT - Upgrade all packages to the latest version # noqa 403
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+  register: apt_result
+  when: ansible_pkg_mgr == "apt"
+  retries: 3
+  until: apt_result is not failed
+
+- name: APT - Clean Archive # noqa 303 305
+  shell: apt-get clean
+  when: ansible_pkg_mgr == "apt"
+
+- name: Zypper - Update all packages # noqa 403
+  zypper:
+    name: '*'
+    state: latest
+  register: zypper_result
+  when: ansible_pkg_mgr == "zypper"
+  retries: 3
+  until: zypper_result is not failed
+
+- name: Reboot
+  reboot:
+    reboot_timeout: 3600
+  when: auto_reboot

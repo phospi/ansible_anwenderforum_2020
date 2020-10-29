@@ -1,0 +1,16 @@
+- name: "Execute Script - Install Windows Updates"
+  script: files/{{ script_ps_install_windowsupdates }}
+  register: update_install_result
+  retries: 10
+  delay: 20
+  until: update_install_result is succeeded
+
+- name: "Execute Script - Test Pending Reboot"
+  script: files/{{ module_pending_reboot }}
+  register: pending_reboot
+  
+- name: Reboot
+  win_reboot:
+    reboot_timeout: 3600
+  when: (auto_reboot == true) and (reboot_required == true)
+

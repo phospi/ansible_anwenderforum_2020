@@ -1,0 +1,28 @@
+- name: 'Patch everything'
+  include_role:
+    name: os_patching
+  vars:
+    - operation: install
+    - auto_reboot: yes
+  when: "'patching' in maintenance_actions"
+
+- name: 'Reboot'
+  win_reboot:
+    reboot_timeout: 3600
+  when: 
+   - ansible_os_family == "Windows"
+   - "'reboot' in maintenance_actions"
+
+- name: 'Reboot'
+  reboot:
+    reboot_timeout: 3600
+  when: 
+   - ansible_os_family != "Windows"
+   - "'reboot' in maintenance_actions"
+
+
+- name: 'VMware Settings'
+  include_role:
+    name: vmware_settings.yml
+  when: "vmware_settings" in maintenance_actions
+

@@ -1,0 +1,12 @@
+# *********************************************************************
+# * Download OS Updates
+# *********************************************************************
+---
+- name: include download for windows tasks
+  include_tasks: download-win.yml
+  when: ansible_os_family == "Windows"
+
+# currently not implemented
+#- name: include downtload for linux tasks
+#  include_tasks: download-linux.yml
+#  when: ansible_os_family != "Windows"

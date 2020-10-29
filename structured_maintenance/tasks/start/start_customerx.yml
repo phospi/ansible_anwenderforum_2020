@@ -1,0 +1,15 @@
+- name: 'Start Tomcat'
+  command: ./startup.sh
+  args:
+    chdir: /var/lib/tomcat/bin/
+  when: "'tomcat' in group_names"
+
+- name: 'Start Services'
+  service:
+    name: "{{ item }}"
+    state: started
+  with_items:
+    - "postgresql-9.6"
+    - "jira"
+    - "confluence"
+  when: "'atlassian' in group_names"

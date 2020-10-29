@@ -1,0 +1,14 @@
+- name: check if customer exists
+  local_action:
+    module: stat
+    path: "{{ playbook_dir }}/tasks/stop/stop_{{ customer }}.yml"
+  register: stop_yml
+  check_mode: no
+  become: no # Ansible Tower security
+
+- name: "Stop Apps for customer {{ customer }}"
+  include_tasks: "stop/stop_{{ customer }}.yml"
+  when: stop_yml.stat.exists
+
+- name: "Stop DB + SAP"
+  include_tasks: "stop/stop_general.yml"

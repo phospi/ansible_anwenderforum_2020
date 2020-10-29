@@ -1,0 +1,8 @@
+- name: Reboot before patch installation
+  win_reboot:
+    reboot_timeout: 3600
+  when: pre_reboot
+
+- name: Include windows installation sub tasks
+  include_tasks: install-win-tasks.yml
+  loop: "{{ range(0, max_reboots)|list }}"

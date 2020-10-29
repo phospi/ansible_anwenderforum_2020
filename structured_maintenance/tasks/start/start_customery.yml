@@ -1,0 +1,17 @@
+- name: "Start mariadb"
+  service: 
+    name: mariadb 
+    state: started
+  when: "'mariadb' in group_names"
+
+- name: Pause for db
+  pause:
+    minutes: 5
+  when: "'mariadb' in group_names"
+
+- name: "Start nginx"
+  service: 
+    name: nginx 
+    state: started 
+    enabled=yes
+  when: "'nginx' in group_names"

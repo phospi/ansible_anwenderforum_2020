@@ -1,0 +1,13 @@
+# *********************************************************************
+# * Install OS Updates
+# *********************************************************************
+---
+- name: Include windows installation tasks
+  include_tasks: install-win.yml
+  when: ansible_os_family == "Windows"
+
+- name: Include linux installation tasks
+  include_tasks: install-linux.yml
+  when: ansible_os_family in ['RedHat', 'Debian', 'Suse']
+
+ 
